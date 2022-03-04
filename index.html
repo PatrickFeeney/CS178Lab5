@@ -31,11 +31,9 @@
     // Create an xScale and yScale
     var xScale = d3.scaleBand().range([0, width]).round([.05]).domain(data.map(function(d) { return d.date; })).padding(0.2);
     var yScale = d3.scaleLinear().range([height, 0]).domain([0, d3.max(data, function(d) { return d.value; })]);
-
     
     // TODO: Create a color scale
     var myColor = d3.scaleOrdinal(d3.schemeCategory10);
-
 
     // Append initial SVG element
     var svg = d3.select("body").append("svg")
@@ -48,22 +46,19 @@
     var xAxis = d3.axisBottom(xScale).tickFormat(d3.timeFormat("%Y-%m"));
     var yAxis = d3.axisLeft(yScale).ticks(10);
 
-    
-
     // Add the axes to the SVG
     g.append("g").attr("transform", `translate(${margin.left},${height})`).call(xAxis).selectAll("text")
     .attr("transform", "translate(13,27)rotate(90)");
     yAxis = g.append("g").attr("transform", `translate(${margin.left},0)`).call(yAxis);
     
-    // TODO: Add labels to the axes
-    
-      yAxis.append("text")
+    // Add labels to the axes
+    yAxis.append("text")
       .attr("transform", "rotate(-90)")
       .attr("y", 6)
       .attr("dy", ".71em")
+      .attr("fill", "black")
       .style("text-anchor", "end")
       .text("Value ($)");
-
       
     // TODO: Create a tooltip
     // TODO: Create the bars
