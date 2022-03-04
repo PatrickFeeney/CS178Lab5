@@ -72,8 +72,15 @@
             .attr("y", d => yScale(d.value))
             .attr("height", d => yScale(0) - yScale(d.value))
             .attr("width", xScale.bandwidth())
-            .attr("fill", d => colorScale(d.date.getFullYear()));
-    // TODO: Add "on" mouseover and mouseleave effects
+            // color the bars
+            .attr("fill", d => colorScale(d.date.getFullYear()))
+            // Add "on" mouseover and mouseleave effects
+            .on("mouseenter", function (actual, i) {
+                d3.select(this).attr("opacity", 0.5)
+            })
+            .on("mouseleave", function (actual, i) {
+                d3.select(this).attr("opacity", 1)
+            }); 
 </script>
 </body>
 </html>
