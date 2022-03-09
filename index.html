@@ -7,10 +7,6 @@
 <body>
 <script src="d3.v7.min.js"></script>
 <script>
-    // The TODOs found in this file are just helpful hints
-    // please refer to the assignment for what is expected of
-    // your bar chart.
-
     const rawData = "date,value\n2013-01,53\n2013-02,165\n2013-03,269\n2014-04,344\n2014-05,376\n2014-06,410\n2014-07,421\n2015-08,405\n2015-09,376\n2015-10,359\n2015-11,392\n2016-12,433\n2016-01,455\n2016-02,478";
     const timeParser = d3.timeParse("%Y-%m");
 
@@ -60,7 +56,24 @@
         .style("text-anchor", "end")
         .text("Value ($)");
       
-    // TODO: Create a tooltip
+    // Create a tooltip that is hidden by default
+    g.append("g")
+        .attr("transform", `translate(${margin.left},0)`)
+        .selectAll("rect")
+        .data(data)
+        .join("text")
+            .attr("x", d => xScale(d.date))
+            .attr("y", d => yScale(d.value + 30))
+            .attr("height", d => yScale(0) - yScale(d.value))
+            .attr("width", xScale.bandwidth())
+            .attr("dy", ".71em")
+            .attr("fill", "black")
+            .attr("class", "text")
+            .attr("id", d => "t" + xScale(d.date))
+            .style("text-anchor", "beginning")
+            .style("display", "none")
+            .text(d => d.value);
+
     // Create the bars
     g.append("g")
         .attr("transform", `translate(${margin.left},0)`)
@@ -74,12 +87,14 @@
             .attr("width", xScale.bandwidth())
             // color the bars
             .attr("fill", d => colorScale(d.date.getFullYear()))
-            // Add "on" mouseover and mouseleave effects
-            .on("mouseenter", function (actual, i) {
-                d3.select(this).attr("opacity", 0.5)
+            // Add "on" mouseover and mouseleave effects, changing opacity and showing tooltip
+            .on("mouseenter", function (event, d) {
+                d3.select("#t" + xScale(d.date).toString()).style("display", "block");
+                d3.select(this).attr("opacity", 0.5);
             })
-            .on("mouseleave", function (actual, i) {
-                d3.select(this).attr("opacity", 1)
+            .on("mouseleave", function (event, d) {
+                d3.selectAll(".text").style("display", "none");
+                d3.select(this).attr("opacity", 1);
             }); 
 </script>
 </body>
